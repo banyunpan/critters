@@ -75,13 +75,34 @@ public class Main {
         if(!Critter.population.isEmpty()){
         	System.out.println("Craig successfully added to population!");
         }
-        Critter.makeCritter(Main.myPackage + "." + "Bird");
+        try{
+        	//Critter.makeCritter(Main.myPackage + "." + "Bird");
+        	Critter.makeCritter(Main.myPackage + "." + "NotCritter");
+        }catch(InvalidCritterException e){
+        	System.out.println(e);
+        	//e.printStackTrace();
+        }catch(Exception e){
+        	System.out.println("shouldn't be here");
+        }
+        
+        /*
+        System.out.println("array exception next");
+        int[] x = new int[9];
+        int y = x[-1];
+        */
+        
+  /*      System.out.println("making hello");
+        Critter.makeCritter("hello");
+   */
+        
         
         System.out.println();
         System.out.println("GLHF");
         
         /* Write your code above */
         System.out.flush();
-
+        
     }
+    
+    
 }

@@ -75,7 +75,7 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
-
+		Critter critter;
 		try{/*
 			Class<?> attemptCritter = Class.forName(critter_class_name);
 			if(Modifier.isAbstract(attemptCritter.getModifiers())){
@@ -90,31 +90,17 @@ public abstract class Critter {
 			}
 			*/
 			Class<?> attemptCritter = Class.forName(critter_class_name);
-			Critter critter = (Critter)(attemptCritter.newInstance());
-			population.add(critter);
-			
-		}/*catch(Exception e){
-			// invalid critter
+			critter = (Critter)(attemptCritter.newInstance());	
+		} catch(Exception e){
 			throw new InvalidCritterException(critter_class_name);
-			
-		}*/ catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally{}
+		} 
 		
-		Critter critter = population.get(population.size() - 1);
+		//Critter critter = population.get(population.size() - 1);
 		critter.energy = Params.start_energy;
 		critter.x_coord = Critter.getRandomInt(Params.world_width - 1);
 		critter.y_coord = Critter.getRandomInt(Params.world_height - 1);
-		
-
+		population.add(critter);
+	
 	}
 	
 	/**
