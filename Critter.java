@@ -12,6 +12,7 @@
  */
 package assignment4;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -22,7 +23,8 @@ import java.util.List;
 
 public abstract class Critter {
 	private static String myPackage;
-	private	static List<Critter> population = new java.util.ArrayList<Critter>();
+	// private	static List<Critter> population = new java.util.ArrayList<Critter>();
+	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
@@ -73,6 +75,46 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+
+		try{/*
+			Class<?> attemptCritter = Class.forName(critter_class_name);
+			if(Modifier.isAbstract(attemptCritter.getModifiers())){
+				// not a concrete class
+				throw new InvalidCritterException(critter_class_name);
+			}
+	
+			Class<?> critterClass = Class.forName("assignment4.Critter");
+			if(!critterClass.isAssignableFrom(attemptCritter)){
+				// not a subclass
+				throw new InvalidCritterException(critter_class_name);
+			}
+			*/
+			Class<?> attemptCritter = Class.forName(critter_class_name);
+			Critter critter = (Critter)(attemptCritter.newInstance());
+			population.add(critter);
+			
+		}/*catch(Exception e){
+			// invalid critter
+			throw new InvalidCritterException(critter_class_name);
+			
+		}*/ catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{}
+		
+		Critter critter = population.get(population.size() - 1);
+		critter.energy = Params.start_energy;
+		critter.x_coord = Critter.getRandomInt(Params.world_width - 1);
+		critter.y_coord = Critter.getRandomInt(Params.world_height - 1);
+		
+
 	}
 	
 	/**
