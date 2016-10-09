@@ -13,6 +13,7 @@
 package assignment4; // cannot be in default package
 import java.util.Scanner;
 import java.io.*;
+import java.util.List;
 
 
 /*
@@ -71,13 +72,15 @@ public class Main {
         /* Write your code below. */
         
         // Critter.makeCritter("assignment4.Craig");
-        Critter.makeCritter(Main.myPackage + ".Craig");
+        Critter.makeCritter("Craig");
+        Critter.makeCritter("Craig");
+        Critter.makeCritter("Algae");
         if(!Critter.population.isEmpty()){
         	System.out.println("Craig successfully added to population!");
         }
         try{
         	//Critter.makeCritter(Main.myPackage + "." + "Bird");
-        	Critter.makeCritter(Main.myPackage + "." + "NotCritter");
+        	Critter.makeCritter("NotCritter");
         }catch(InvalidCritterException e){
         	System.out.println(e);
         	//e.printStackTrace();
@@ -95,6 +98,13 @@ public class Main {
         Critter.makeCritter("hello");
    */
         
+        List<Critter> Craigs = Critter.getInstances("Craig");
+        java.util.ArrayList<String> hi = new java.util.ArrayList<String>();
+        if(Craigs.size() == 2 && Critter.population.size() == 3){
+        	System.out.println("getInstances worked!!");
+        }
+        
+        Critter.runStats(Critter.population);
         
         System.out.println();
         System.out.println("GLHF");

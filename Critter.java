@@ -89,11 +89,16 @@ public abstract class Critter {
 				throw new InvalidCritterException(critter_class_name);
 			}
 			*/
-			Class<?> attemptCritter = Class.forName(critter_class_name);
+			//this will throw exceptions if any of the following are true:
+			// 1. critter_class does not exist in the critter package
+			Class<?> attemptCritter = Class.forName(Critter.myPackage + "." + critter_class_name);
+			//this will throw exceptions if any of the following are true:
+			// 1. critter_class is an abstract class
+			// 2. critter_class does not extend Critter
 			critter = (Critter)(attemptCritter.newInstance());	
 		} catch(Exception e){
 			throw new InvalidCritterException(critter_class_name);
-		} 
+		}
 		
 		//Critter critter = population.get(population.size() - 1);
 		critter.energy = Params.start_energy;
@@ -111,7 +116,29 @@ public abstract class Critter {
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-	
+		
+		Class<?> critter, critterClass;
+		try{
+			critterClass = Class.forName(myPackage + ".Critter");
+			critter = Class.forName(myPackage + "." + critter_class_name);
+			if(Modifier.isAbstract(critter.getModifiers())){
+				//critter_class is abstract
+				throw new InvalidCritterException(critter_class_name);
+			}
+			if(!critterClass.isAssignableFrom(critter)){
+				//critter_class is not subclass of Critter
+				throw new InvalidCritterException(critter_class_name);
+			}
+		}catch(ClassNotFoundException e){
+			throw new InvalidCritterException(critter_class_name);
+		}
+		
+		for(int i = 0; i < population.size(); i++){
+			if(critter.isInstance(population.get(i))){
+				result.add(population.get(i));
+			}
+		}
+		
 		return result;
 	}
 	
@@ -198,6 +225,19 @@ public abstract class Critter {
 	}
 	
 	public static void worldTimeStep() {
+		for(int i = 0; i < population.size(); i++){
+			population.get(i).doTimeStep();
+		}
+		//check if critters are in the same spot
+		//ie, encounter
+		
+		//add newly born critters to population
+		
+		//apply rest energy and
+		//remove dead critters
+		
+		//add new algae
+		
 	}
 	
 	public static void displayWorld() {}
