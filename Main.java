@@ -14,6 +14,7 @@ package assignment4; // cannot be in default package
 import java.util.Scanner;
 import java.io.*;
 import java.util.List;
+import java.lang.reflect.*; // added
 
 
 /*
@@ -70,44 +71,79 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        
-        // Critter.makeCritter("assignment4.Craig");
-        Critter.makeCritter("Craig");
-        Critter.makeCritter("Craig");
-        Critter.makeCritter("Algae");
-        if(!Critter.population.isEmpty()){
-        	System.out.println("Craig successfully added to population!");
+        while(kb.hasNext()){
+	        String s = kb.nextLine();
+	        String original = s;
+	        String[] words = s.split("\\s+"); // \\s+ takes away all spaces and tabs
+	        /*for(int i = 0; i < words.length; i++){ // test for s.split
+	        	System.out.println(words[i] + " " + "is the " + i + "word");
+	        }*/
+	        try{
+		        if(words[0].equals("quit")){
+		        	if(words.length > 1){
+		        		throw new Exception();
+		        	}
+		        	break;
+		        }
+		        else if(words[0].equals("show")){
+		        	if(words.length > 1){
+		        		throw new Exception();
+		        	}
+		        	Critter.displayWorld();
+		        }
+		        else if(words[0].equals("step")){
+		        	int num;
+		        	if(words.length > 2){
+		        		throw new Exception();
+		        	}
+		        	if(words.length > 1){
+		        		num = Integer.parseInt(words[1]); // turns the string in words[1] to an int
+		        	}
+		        	else{
+		        		num = 1; // user types in "step"
+		        	}
+	        		for(int i = num; i > 0; i--){
+	        			Critter.worldTimeStep();
+	        		}
+		        }
+		        else if(words[0].equals("seed")){
+		        	if(words.length != 2){
+		        		throw new Exception();
+		        	}
+		        	Critter.setSeed(Integer.parseInt(words[1]));
+		        }
+		        else if(words[0].equals("make")){
+		        	String next = words[1];
+		        	int num;
+		        	if(words.length > 3){
+		        		throw new Exception();
+		        	}
+		        	if(words.length > 2){
+		        		num = Integer.parseInt(words[2]); // turns the string in words[2] to an int
+		        	}
+		        	else{
+		        		num = 1; // user types in only make and class_name
+		        	}
+	        		for(int i = num; i > 0; i--){
+	        			Critter.makeCritter(next);
+	        		}
+		        }
+		        else if(words[0].equals("stats")){
+		        	if(words.length != 2){
+		        		throw new Exception();
+		        	}
+		        	Class<?> crit = Class.forName(myPackage + "." + words[1]);
+		        	Method m = crit.getMethod("runStats", List.class);
+		        	m.invoke(null, Critter.getInstances(words[1]));
+		        }
+		        else{
+		        	throw new Exception();
+		        }
+	        }
+	        catch(Exception e){
+	        	System.out.println("error processing: " + original);
+	        }
         }
-        try{
-        	//Critter.makeCritter(Main.myPackage + "." + "Bird");
-        	Critter.makeCritter("NotCritter");
-        }catch(InvalidCritterException e){
-        	System.out.println(e);
-        	//e.printStackTrace();
-        }catch(Exception e){
-        	System.out.println("shouldn't be here");
-        }
-        
-        /*
-        System.out.println("array exception next");
-        int[] x = new int[9];
-        int y = x[-1];
-        */
-        
-  /*      System.out.println("making hello");
-        Critter.makeCritter("hello");
-   */
-        
-        List<Critter> Craigs = Critter.getInstances("Craig");
-        java.util.ArrayList<String> hi = new java.util.ArrayList<String>();
-        if(Craigs.size() == 2 && Critter.population.size() == 3){
-        	System.out.println("getInstances worked!!");
-        }
-        
-        Critter.runStats(Critter.population);
-        
-        System.out.println();
-        System.out.println("GLHF");
         
         /* Write your code above */
         System.out.flush();

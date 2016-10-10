@@ -121,10 +121,10 @@ public abstract class Critter {
 		try{
 			critterClass = Class.forName(myPackage + ".Critter");
 			critter = Class.forName(myPackage + "." + critter_class_name);
-			if(Modifier.isAbstract(critter.getModifiers())){
+			/*if(Modifier.isAbstract(critter.getModifiers())){
 				//critter_class is abstract
 				throw new InvalidCritterException(critter_class_name);
-			}
+			}*/
 			if(!critterClass.isAssignableFrom(critter)){
 				//critter_class is not subclass of Critter
 				throw new InvalidCritterException(critter_class_name);
@@ -239,6 +239,40 @@ public abstract class Critter {
 		//add new algae
 		
 	}
-	
-	public static void displayWorld() {}
+	private static String[][] world;
+	public static void displayWorld() {
+		world = new String[Params.world_width][Params.world_height];
+		for(int x = 0; x < Params.world_width; x ++){
+			for(int y = 0; y < Params.world_height; y ++){
+				world[x][y] = " ";
+			}
+		}
+
+		for(int i = 0; i < population.size(); i ++){
+			int x = population.get(i).x_coord;
+			int y = population.get(i).y_coord;
+			world[x][y] = population.get(i).toString();
+		}
+		System.out.print("+");
+		for(int x = 0; x < Params.world_width; x++){
+			System.out.print("-");
+		}
+		System.out.println("+");
+		for(int y = 0; y < Params.world_height; y ++){
+			for(int x = 0; x < Params.world_width; x ++){
+				if(x == 0){
+					System.out.print("|");
+				}
+				System.out.print(world[x][y]);
+			}
+			System.out.println("|");
+		}
+		System.out.print("+");
+		for(int x = 0; x < Params.world_width; x++){
+			System.out.print("-");
+		}
+		System.out.println("+");
+
+		
+	}
 }
