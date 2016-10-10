@@ -52,10 +52,15 @@ public abstract class Critter {
 	private int y_coord;
 	
 	protected final void walk(int direction) {
+		//DONE
+		energy -= Params.walk_energy_cost;
+		move(direction, 1);
 	}
 	
 	protected final void run(int direction) {
-		
+		//DONE
+		energy -= Params.run_energy_cost;
+		move(direction, 2);
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
@@ -222,11 +227,16 @@ public abstract class Critter {
 	 * Clear the world of all critters, dead and alive
 	 */
 	public static void clearWorld() {
+		// DONE
+		population = new java.util.ArrayList<Critter>();
 	}
 	
 	public static void worldTimeStep() {
 		for(int i = 0; i < population.size(); i++){
 			population.get(i).doTimeStep();
+			if(population.get(i).energy <= 0){
+				population.remove(i);
+			}
 		}
 		//check if critters are in the same spot
 		//ie, encounter
@@ -239,8 +249,11 @@ public abstract class Critter {
 		//add new algae
 		
 	}
+	
 	private static String[][] world;
+	
 	public static void displayWorld() {
+		//DONE
 		world = new String[Params.world_width][Params.world_height];
 		for(int x = 0; x < Params.world_width; x ++){
 			for(int y = 0; y < Params.world_height; y ++){
@@ -253,6 +266,7 @@ public abstract class Critter {
 			int y = population.get(i).y_coord;
 			world[x][y] = population.get(i).toString();
 		}
+		
 		System.out.print("+");
 		for(int x = 0; x < Params.world_width; x++){
 			System.out.print("-");
@@ -274,5 +288,31 @@ public abstract class Critter {
 		System.out.println("+");
 
 		
+	}
+	
+	private final void move(int dir, int mag){
+		if(dir == 1 || dir == 0 || dir == 7){
+			// move in x positive direction
+			x_coord = (x_coord + mag) % Params.world_width;
+		}
+		if(dir == 3 || dir == 4 || dir == 5){
+			// move in x negative direction
+			x_coord = (x_coord - mag);
+			while(x_coord < 0){ // wrap around
+				x_coord += Params.world_width;
+			}
+		}
+		
+		if(dir == 5 || dir == 6 || dir == 7){
+			// move in y positive direction
+			y_coord = (y_coord + mag) % Params.world_height;
+		}
+		if(dir == 1 || dir == 2 || dir == 3){
+			// move in y negative direction
+			y_coord = (y_coord - mag);
+			while(y_coord < 0){ // wrap around
+				y_coord += Params.world_height;
+			}
+		}
 	}
 }

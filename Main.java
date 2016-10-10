@@ -81,22 +81,26 @@ public class Main {
 	        try{
 		        if(words[0].equals("quit")){
 		        	if(words.length > 1){
-		        		throw new Exception();
+		        		System.out.println("invalid command: " + original);
 		        	}
-		        	break;
+		        	else{
+		        		break;
+		        	}
 		        }
 		        else if(words[0].equals("show")){
 		        	if(words.length > 1){
-		        		throw new Exception();
+		        		System.out.println("invalid command: " + original);
 		        	}
-		        	Critter.displayWorld();
+		        	else{
+		        		Critter.displayWorld();
+		        	}
 		        }
 		        else if(words[0].equals("step")){
-		        	int num;
+		        	int num = 0;
 		        	if(words.length > 2){
-		        		throw new Exception();
+		        		System.out.println("invalid command: " + original);
 		        	}
-		        	if(words.length > 1){
+		        	else if(words.length > 1){
 		        		num = Integer.parseInt(words[1]); // turns the string in words[1] to an int
 		        	}
 		        	else{
@@ -137,7 +141,7 @@ public class Main {
 		        	m.invoke(null, Critter.getInstances(words[1]));
 		        }
 		        else{
-		        	throw new Exception();
+		        	System.out.println("invalid command: " + original);
 		        }
 	        }
 	        catch(Exception e){
