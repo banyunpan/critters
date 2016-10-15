@@ -81,7 +81,7 @@ public class Main {
 	        try{
 		        if(words[0].equals("quit")){
 		        	if(words.length > 1){
-		        		System.out.println("invalid command: " + original);
+		        		throw new Exception();
 		        	}
 		        	else{
 		        		break;
@@ -89,7 +89,7 @@ public class Main {
 		        }
 		        else if(words[0].equals("show")){
 		        	if(words.length > 1){
-		        		System.out.println("invalid command: " + original);
+		        		throw new Exception();
 		        	}
 		        	else{
 		        		Critter.displayWorld();
@@ -98,10 +98,13 @@ public class Main {
 		        else if(words[0].equals("step")){
 		        	int num = 0;
 		        	if(words.length > 2){
-		        		System.out.println("invalid command: " + original);
+		        		throw new Exception();
 		        	}
 		        	else if(words.length > 1){
 		        		num = Integer.parseInt(words[1]); // turns the string in words[1] to an int
+		        		if(num < 0){
+		        			throw new Exception();
+		        		}
 		        	}
 		        	else{
 		        		num = 1; // user types in "step"
@@ -124,6 +127,9 @@ public class Main {
 		        	}
 		        	if(words.length > 2){
 		        		num = Integer.parseInt(words[2]); // turns the string in words[2] to an int
+		        		if(num < 0){
+		        			throw new Exception();
+		        		}
 		        	}
 		        	else{
 		        		num = 1; // user types in only make and class_name
