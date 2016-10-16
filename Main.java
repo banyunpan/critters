@@ -73,6 +73,9 @@ public class Main {
         /* Write your code below. */
         while(kb.hasNext()){
 	        String s = kb.nextLine();
+	        if(s.trim().length() == 0){
+	        	continue;
+	        }
 	        String original = s;
 	        String[] words = s.split("\\s+"); // \\s+ takes away all spaces and tabs
 	        /*for(int i = 0; i < words.length; i++){ // test for s.split
@@ -151,6 +154,7 @@ public class Main {
 		        }
 	        }
 	        catch(Exception e){
+	        	e.printStackTrace();
 	        	System.out.println("error processing: " + original);
 	        }
         }

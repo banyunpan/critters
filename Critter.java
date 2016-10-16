@@ -64,6 +64,15 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if(energy < Params.min_reproduce_energy){
+			return;
+		}
+		offspring.energy = energy / 2;
+		energy = (energy+1) / 2;
+		offspring.x_coord = x_coord;
+		offspring.y_coord = y_coord;
+		offspring.move(direction, 1);
+		babies.add(offspring);
 	}
 
 	public abstract void doTimeStep();
@@ -107,8 +116,10 @@ public abstract class Critter {
 		
 		//Critter critter = population.get(population.size() - 1);
 		critter.energy = Params.start_energy;
-		critter.x_coord = Critter.getRandomInt(Params.world_width - 1);
-		critter.y_coord = Critter.getRandomInt(Params.world_height - 1);
+		//critter.x_coord = Critter.getRandomInt(Params.world_width - 1);
+		//itter.y_coord = Critter.getRandomInt(Params.world_height - 1);
+		critter.x_coord = 0;
+		critter.y_coord = 0;
 		population.add(critter);
 	
 	}
@@ -238,15 +249,75 @@ public abstract class Critter {
 				population.remove(i);
 			}
 		}
+		
+		
+		
 		//check if critters are in the same spot
 		//ie, encounter
 		
+		for(int A = 0; A < population.size(); A++){				
+			Critter critA = population.get(A);
+			for(int B = 0; B < population.size(); B++){
+				if(A == B){
+					continue;
+				}
+				Critter critB = population.get(B);
+				if(critB.energy <= 0){
+					continue;
+				}
+				if(critA.energy <= 0){
+					continue;
+				}
+				if(critA.x_coord == critB.x_coord && critA.y_coord == critB.y_coord){	//encounter
+					int rolla = 0;
+					int rollb = 0;
+					if(critA.fight(critB.toString())){
+						rolla = getRandomInt(critA.energy);
+					}
+					if(critB.fight(critA.toString())){
+						rollb = getRandomInt(critB.energy);
+					}
+					if(critA.x_coord == critB.x_coord && critA.y_coord == critB.y_coord){
+						if(critA.energy > 0 && critB.energy > 0){
+							if(rolla >= rollb){
+								int e = critB.energy / 2;
+								critB.energy = 0;
+								critA.energy = critA.energy + e;
+							}
+							else{
+								int e = critA.energy / 2;
+								critA.energy = 0;
+								critB.energy = critB.energy + e;
+							}
+						}
+					}
+					
+				}
+			}
+		}
+		
 		//add newly born critters to population
+		for(int x = 0; x < babies.size(); x++){
+			population.add(babies.get(x));
+		}
+		babies = new java.util.ArrayList<Critter>();
 		
 		//apply rest energy and
 		//remove dead critters
+		int count = population.size() - 1;
+		while(count >= 0){
+			population.get(count).energy -= Params.rest_energy_cost;
+			if(population.get(count).energy <= 0){
+				population.remove(count);
+			}
+			count--;
+		}
 		
 		//add new algae
+    		for(int i = Params.refresh_algae_count; i > 0; i--){
+    			try{ Critter.makeCritter("Algae"); }
+    			catch(InvalidCritterException e){}
+    		}
 		
 	}
 	
