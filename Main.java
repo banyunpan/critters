@@ -71,6 +71,7 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
+        System.out.print("critters> ");
         while(kb.hasNext()){
 	        String s = kb.nextLine();
 	        if(s.trim().length() == 0){
@@ -154,9 +155,10 @@ public class Main {
 		        }
 	        }
 	        catch(Exception e){
-	        	e.printStackTrace();
+	        	//e.printStackTrace();
 	        	System.out.println("error processing: " + original);
 	        }
+	        System.out.print("critters> ");
         }
         
         /* Write your code above */

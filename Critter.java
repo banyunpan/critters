@@ -51,16 +51,39 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	private int timesMoved = 0;
+	private static final int MAX_MOVES = 1;
+
 	protected final void walk(int direction) {
 		//DONE
 		energy -= Params.walk_energy_cost;
+		if(timesMoved >= MAX_MOVES){
+			return;
+		}
+		int oldX = x_coord;
+		int oldY = y_coord;
 		move(direction, 1);
+		if(fighting && isSameSpot()){
+			x_coord = oldX;
+			y_coord = oldY;
+		}
+		timesMoved++;
 	}
 	
 	protected final void run(int direction) {
 		//DONE
 		energy -= Params.run_energy_cost;
+		if(timesMoved >= MAX_MOVES){
+			return;
+		}
+		int oldX = x_coord;
+		int oldY = y_coord;
 		move(direction, 2);
+		if(fighting && isSameSpot()){
+			x_coord = oldX;
+			y_coord = oldY;
+		}
+		timesMoved++;
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
@@ -195,6 +218,7 @@ public abstract class Critter {
 	static abstract class TestCritter extends Critter {
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
+			//if new_energy_value <= 0, should remove that critter
 		}
 		
 		protected void setX_coord(int new_x_coord) {
@@ -242,19 +266,14 @@ public abstract class Critter {
 		population = new java.util.ArrayList<Critter>();
 	}
 	
+	private boolean fighting = false;
 	public static void worldTimeStep() {
 		for(int i = 0; i < population.size(); i++){
 			population.get(i).doTimeStep();
-			if(population.get(i).energy <= 0){
-				population.remove(i);
-			}
 		}
-		
-		
 		
 		//check if critters are in the same spot
 		//ie, encounter
-		
 		for(int A = 0; A < population.size(); A++){				
 			Critter critA = population.get(A);
 			for(int B = 0; B < population.size(); B++){
@@ -262,15 +281,14 @@ public abstract class Critter {
 					continue;
 				}
 				Critter critB = population.get(B);
-				if(critB.energy <= 0){
-					continue;
-				}
-				if(critA.energy <= 0){
+				if(critB.energy <= 0 || critA.energy <= 0){
 					continue;
 				}
 				if(critA.x_coord == critB.x_coord && critA.y_coord == critB.y_coord){	//encounter
 					int rolla = 0;
 					int rollb = 0;
+					critA.fighting = true;
+					critB.fighting = true;
 					if(critA.fight(critB.toString())){
 						rolla = getRandomInt(critA.energy);
 					}
@@ -317,6 +335,12 @@ public abstract class Critter {
     		for(int i = Params.refresh_algae_count; i > 0; i--){
     			try{ Critter.makeCritter("Algae"); }
     			catch(InvalidCritterException e){}
+    		}
+    		
+    	// reset movement quota and fighting status on all critters
+    		for(int i = 0; i < population.size(); i++){
+    			population.get(i).timesMoved = 0;
+    			population.get(i).fighting = false;
     		}
 		
 	}
@@ -385,5 +409,17 @@ public abstract class Critter {
 				y_coord += Params.world_height;
 			}
 		}
+	}
+	
+	private boolean isSameSpot(){
+		for(int i = 0; i < population.size(); i++){
+			Critter crit = population.get(i);
+			if(this != crit){
+				if(crit.x_coord == x_coord && crit.y_coord == y_coord){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
