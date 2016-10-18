@@ -1,5 +1,15 @@
 package assignment4;
-
+/* CRITTERS <MyClass.java> 
+ * EE422C Project 4 submission by
+ * Replace <...> with your actual data.
+ * Megan Peregrino
+ * mnp624
+ * 16465
+ * Ban-Yun "Toby" Pan
+ * bp9594
+ * 16480
+ * Slip days used: <0>
+ * Fall 2016  */
 public class Critter4 extends Critter{
 
 	//how many times this critter has been instantiated

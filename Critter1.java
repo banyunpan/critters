@@ -1,5 +1,15 @@
 package assignment4;
-
+/* CRITTERS <MyClass.java> 
+ * EE422C Project 4 submission by
+ * Replace <...> with your actual data.
+ * Megan Peregrino
+ * mnp624
+ * 16465
+ * Ban-Yun "Toby" Pan
+ * bp9594
+ * 16480
+ * Slip days used: <0>
+ * Fall 2016  */
 public class Critter1 extends Critter{
 	
 	
@@ -20,16 +30,11 @@ public class Critter1 extends Critter{
 
 	@Override
 	public void doTimeStep() {
-		
 		if(dir > 4){
 			Critter1 baby = new Critter1();
 			reproduce(baby, dir);
 		}
-		
-		/* take two steps forward */
 		run(dir);
-		
-		/* pick a new direction based on our genes */
 		int roll = Critter.getRandomInt(GENE_TOTAL);
 		int turn = 0;
 		while (genes[turn] <= roll) {
@@ -37,31 +42,9 @@ public class Critter1 extends Critter{
 			turn = turn + 1;
 		}
 		assert(turn < 8);
-		
 		dir = (dir + turn) % 8;
-		
 	}
 	
 	@Override
 	public String toString(){ return "1"; }
-	
-	public static void runStats(java.util.List<Critter> critters1) {
-		int total_straight = 0;
-		int total_left = 0;
-		int total_right = 0;
-		int total_back = 0;
-		for (Object obj : critters1) {
-			Critter1 c = (Critter1) obj;
-			total_straight += c.genes[0];
-			total_right += c.genes[1] + c.genes[2] + c.genes[3];
-			total_back += c.genes[4];
-			total_left += c.genes[5] + c.genes[6] + c.genes[7];
-		}
-		System.out.print("" + critters1.size() + " total Critters1    ");
-		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * critters1.size()) + "% straight   ");
-		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * critters1.size()) + "% back   ");
-		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * critters1.size()) + "% right   ");
-		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * critters1.size()) + "% left   ");
-		System.out.println();
-	}
 }

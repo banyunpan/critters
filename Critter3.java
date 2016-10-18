@@ -1,5 +1,15 @@
 package assignment4;
-
+/* CRITTERS <MyClass.java> 
+ * EE422C Project 4 submission by
+ * Replace <...> with your actual data.
+ * Megan Peregrino
+ * mnp624
+ * 16465
+ * Ban-Yun "Toby" Pan
+ * bp9594
+ * 16480
+ * Slip days used: <0>
+ * Fall 2016  */
 public class Critter3 extends Critter{
 	//will always try to reproduce this many times during doTimeStep
 	private int babies;
