@@ -71,12 +71,60 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        System.out.print("critters> ");
-        while(kb.hasNext()){
+       // Critter.makeCritter("craig");
+        
+        userInterface(kb);
+        
+        /* Write your code above */
+        System.out.flush();
+        
+    }
+    
+    /**
+     * controller for Critter simulation. accepts the following commands:
+     * quit – terminates the program
+     * 
+     * show – invoke the Critter.displayWorld() method
+     * 
+     * step [ <count> ] – The <count> is optional (count is [STAGE2]). If 
+     * <count> is included, then <count> will be an integer. There are no square brackets
+     * in this command, this notation is used simply to indicate that the <count> is optional.
+     * For example, “step 10000” is a legal command, as is “step”. In response to
+     * this command, the program must perform the specified number of world time
+     * steps. If no count is provided, then only one world time step is performed.
+     * 
+     * seed <number> - invoke the Critter.setSeed method using
+     * the number provided as the new random number seed. This method is provided so
+     * that you can force your simulation to repeat the same sequence of random numbers
+     * during testing.
+     * 
+     * make <class_name> [ <count> ] – the <count> argument is optional. The command “make” must be provided
+     * verbatim. The <class_name> argument will be a string and must be the name
+     * of a concrete subclass of Critter. When this command is executed, the controller
+     * will invoke the Critter.makeCritter static method. The <class_name>
+     * string will be provided as an argument to makeCritter. If no count is provided,
+     * then makeCritter will be called exactly once. If a count is provided, then
+     * 
+     * stats <class_name> -- Similar to make, <class_name> must be a
+     * string and will be the name of a concrete subclass of Critter. In response to this
+     * command, the controller will
+     * 1. Invoke the Critter.getInstances(<class_name>) which must
+     * return a java.util.List<Critter> of all the instances of the specified
+     * class (including instances of subclasses) currently in the critter collection
+     * – you must write Crittter.getInstances, by the way, we
+     * didn’t provide that for you.
+     * 2. Invoke the static runStats() method for the specified class. For example,
+     * if <class_name> were Craig, then your controller will invoke
+     * Craig.runStats() and will invoke this function with a list of all of
+     * the Craig critters currently in the critter list. See the note about converting
+     * unqualified names to qualified.
+     * 
+     * @param kb: input stream to the controller
+     */
+    private static void userInterface(Scanner kb){
+    	System.out.print("critters> ");
+        while(kb.hasNextLine()){
 	        String s = kb.nextLine();
-	        if(s.trim().length() == 0){
-	        	continue;
-	        }
 	        String original = s;
 	        String[] words = s.split("\\s+"); // \\s+ takes away all spaces and tabs
 	        /*for(int i = 0; i < words.length; i++){ // test for s.split
@@ -160,10 +208,6 @@ public class Main {
 	        }
 	        System.out.print("critters> ");
         }
-        
-        /* Write your code above */
-        System.out.flush();
-        
     }
     
     

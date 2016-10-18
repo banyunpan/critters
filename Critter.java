@@ -23,8 +23,7 @@ import java.util.List;
 
 public abstract class Critter {
 	private static String myPackage;
-	// private	static List<Critter> population = new java.util.ArrayList<Critter>();
-	static List<Critter> population = new java.util.ArrayList<Critter>();
+	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
@@ -51,9 +50,19 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	/**
+	 * records the number of attempts that a Critter has attempted to move
+	 * inside single worldTimeStep
+	 */
 	private int timesMoved = 0;
+	//maximum number of moves that a Critter may attempt to make in one worldTimeStep
 	private static final int MAX_MOVES = 1;
 
+	/**
+	 * given a direction, Critter will move one unit in that direction.
+	 * substracts the appropriate amount of energy for the attempt.
+	 * @param direction : the direction to move. 0 is east, 1 is northeast, etc
+	 */
 	protected final void walk(int direction) {
 		//DONE
 		energy -= Params.walk_energy_cost;
@@ -69,7 +78,11 @@ public abstract class Critter {
 		}
 		timesMoved++;
 	}
-	
+	/**
+	 * given a direction, Critter will move two units in that direction.
+	 * substracts the appropriate amount of energy for the attempt.
+	 * @param direction : the direction to move. 0 is east, 1 is northeast, etc
+	 */
 	protected final void run(int direction) {
 		//DONE
 		energy -= Params.run_energy_cost;
@@ -85,7 +98,13 @@ public abstract class Critter {
 		}
 		timesMoved++;
 	}
-	
+	/**
+	 * initialize an instance of the Critter, if the parent's energy is sufficient.
+	 * assigns half the parent's energy to the offspring, rounded down
+	 * deducts half the parent's energy, rounded up
+	 * @param offspring: the new Critter
+	 * @param direction: the space relative to the parent that offspring will be placed
+	 */
 	protected final void reproduce(Critter offspring, int direction) {
 		if(energy < Params.min_reproduce_energy){
 			return;
@@ -134,7 +153,8 @@ public abstract class Critter {
 			// 2. critter_class does not extend Critter
 			critter = (Critter)(attemptCritter.newInstance());	
 		} catch(Exception e){
-			throw new InvalidCritterException(critter_class_name);
+			//throw new InvalidCritterException(critter_class_name);
+			throw new InvalidCritterException("");
 		}
 		
 		//Critter critter = population.get(population.size() - 1);
@@ -166,10 +186,12 @@ public abstract class Critter {
 			}*/
 			if(!critterClass.isAssignableFrom(critter)){
 				//critter_class is not subclass of Critter
-				throw new InvalidCritterException(critter_class_name);
+				//throw new InvalidCritterException(critter_class_name);
+				throw new InvalidCritterException("");
 			}
 		}catch(ClassNotFoundException e){
-			throw new InvalidCritterException(critter_class_name);
+			//throw new InvalidCritterException(critter_class_name);
+			throw new InvalidCritterException("");
 		}
 		
 		for(int i = 0; i < population.size(); i++){
@@ -266,7 +288,13 @@ public abstract class Critter {
 		population = new java.util.ArrayList<Critter>();
 	}
 	
+	//flag indicating if the Critter has just called its fight method
 	private boolean fighting = false;
+	/**
+	 * each critter takes actions and interacts with other critters in its same spot.
+	 * rest energy is deducted and dead critters are removed.
+	 * new Algae and babies born in this worldTimeStep are added to the population.
+	 */
 	public static void worldTimeStep() {
 		for(int i = 0; i < population.size(); i++){
 			population.get(i).doTimeStep();
@@ -345,8 +373,15 @@ public abstract class Critter {
 		
 	}
 	
+	/**
+	 * ASCII representation of the world.
+	 * Only one Critter is displayed per location, even if multiple Critters occupy the same spot.
+	 */
 	private static String[][] world;
 	
+	/**
+	 * prints the state of the current world onto the console
+	 */
 	public static void displayWorld() {
 		//DONE
 		world = new String[Params.world_width][Params.world_height];
@@ -384,7 +419,12 @@ public abstract class Critter {
 
 		
 	}
-	
+	/**
+	 * moves the Critter a number of spaces in the specified direction.
+	 * will wrap around if moving through border of world.
+	 * @param dir: direction to move the Critter (as defined in walk/run methods)
+	 * @param mag: number of spaces to move.
+	 */
 	private final void move(int dir, int mag){
 		if(dir == 1 || dir == 0 || dir == 7){
 			// move in x positive direction
@@ -414,7 +454,7 @@ public abstract class Critter {
 	private boolean isSameSpot(){
 		for(int i = 0; i < population.size(); i++){
 			Critter crit = population.get(i);
-			if(this != crit){
+			if(this != crit && crit.energy > 0){
 				if(crit.x_coord == x_coord && crit.y_coord == y_coord){
 					return true;
 				}
