@@ -1,4 +1,3 @@
-package assignment4;
 /* CRITTERS <MyClass.java> 
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -10,6 +9,8 @@ package assignment4;
  * 16480
  * Slip days used: <0>
  * Fall 2016  */
+package assignment4;
+
 import java.lang.reflect.Modifier;
 import java.util.List;
 
@@ -157,10 +158,10 @@ public abstract class Critter {
 		
 		//Critter critter = population.get(population.size() - 1);
 		critter.energy = Params.start_energy;
-		//critter.x_coord = Critter.getRandomInt(Params.world_width - 1);
-		//itter.y_coord = Critter.getRandomInt(Params.world_height - 1);
-		critter.x_coord = 0;
-		critter.y_coord = 0;
+		critter.x_coord = Critter.getRandomInt(Params.world_width - 1);
+		critter.y_coord = Critter.getRandomInt(Params.world_height - 1);
+	//	critter.x_coord = 0;
+	//	critter.y_coord = 0;
 		population.add(critter);
 	
 	}
@@ -460,4 +461,5 @@ public abstract class Critter {
 		}
 		return false;
 	}
+	
 }

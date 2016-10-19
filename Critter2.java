@@ -1,4 +1,3 @@
-package assignment4;
 /* CRITTERS <MyClass.java> 
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -10,6 +9,8 @@ package assignment4;
  * 16480
  * Slip days used: <0>
  * Fall 2016  */
+package assignment4;
+
 public class Critter2 extends Critter{
 	
 	private static final int GENE_TOTAL = 24;

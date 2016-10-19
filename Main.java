@@ -1,4 +1,3 @@
-package assignment4; // cannot be in default package
 /* CRITTERS <MyClass.java> 
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -10,6 +9,8 @@ package assignment4; // cannot be in default package
  * 16480
  * Slip days used: <0>
  * Fall 2016  */
+package assignment4; // cannot be in default package
+
 import java.util.Scanner;
 import java.io.*;
 import java.util.List;
@@ -71,8 +72,8 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
        // Critter.makeCritter("craig");
-        
         userInterface(kb);
+
         
         /* Write your code above */
         System.out.flush();
@@ -121,16 +122,91 @@ public class Main {
      * @param kb: input stream to the controller
      */
     private static void userInterface(Scanner kb){
-    	System.out.print("critters> ");
+    	System.out.print("critters>");
         while(kb.hasNextLine()){
 	        String s = kb.nextLine();
+	        Scanner sc = new Scanner(s);
 	        String original = s;
+	        String word;
 	        String[] words = s.split("\\s+"); // \\s+ takes away all spaces and tabs
 	        /*for(int i = 0; i < words.length; i++){ // test for s.split
 	        	System.out.println(words[i] + " " + "is the " + i + "word");
 	        }*/
 	        try{
-		        if(words[0].equals("quit")){
+	        	word = sc.next();
+	        	if(word.equals("quit")){
+	        		if(sc.hasNext())
+		        		throw new Exception();
+		        	else
+		        		break;
+		        }
+		        else if(word.equals("show")){
+		        	if(sc.hasNext())
+		        		throw new Exception();
+		        	else
+		        		Critter.displayWorld();
+		        }
+		        else if(word.equals("step")){
+		        	int num = 0;
+		        	if(sc.hasNext()){
+		        		num = Integer.parseInt(sc.next());
+		        		if(num < 0)
+		        			throw new Exception();
+		        	}
+		        	else{
+		        		num = 1; // user types in "step"
+		        	}
+	        		for(int i = num; i > 0; i--){
+	        			Critter.worldTimeStep();
+	        		}
+		        }
+		        else if(word.equals("seed")){
+		        	int seed;
+		        	if(sc.hasNextInt())
+		        		seed = Integer.parseInt(sc.next());
+		        	else
+		        		throw new Exception();
+		        	if(sc.hasNext()) throw new Exception();
+		        	Critter.setSeed(seed);
+		        }
+		        else if(word.equals("make")){
+		        	String critter = null;
+		        	int num = 1;
+		        	if(sc.hasNext()) // get critter name
+		        		critter = sc.next();
+		        	else throw new Exception();
+		        	if(sc.hasNext()) // get integer
+		        		num = Integer.parseInt(sc.next());
+		        	if(num < 0) throw new Exception();
+		        	if(sc.hasNext()) throw new Exception();
+	        		for(int i = num; i > 0; i--){
+	        			Critter.makeCritter(critter);
+	        		}
+		        }
+		        else if(word.equals("stats")){
+		        	String critter = null;
+		        	if(sc.hasNext())
+		        		critter = sc.next();
+		        	else throw new Exception();
+		        	if(sc.hasNext())
+		        		throw new Exception();
+		        	
+		        	Class<?> crit = Class.forName(myPackage + "." + critter);
+		        	if(Modifier.isAbstract(crit.getModifiers()))
+		        		throw new Exception();
+		        	Method m = crit.getMethod("runStats", List.class);
+		        	m.invoke(null, Critter.getInstances(critter));
+		        }
+		        else{
+		        	System.out.print("invalid command: " + original + "\n");
+		        }
+	        	sc.close();
+	        }catch(Exception e){
+	        	//e.printStackTrace();
+	        	sc.close();
+	        	System.out.print("error processing: " + original + "\n");
+	        }
+		      /*  if(words[0].equals("quit")){
 		        	if(words.length > 1){
 		        		throw new Exception();
 		        	}
@@ -204,8 +280,8 @@ public class Main {
 	        catch(Exception e){
 	        	//e.printStackTrace();
 	        	System.out.println("error processing: " + original);
-	        }
-	        System.out.print("critters> ");
+	        }*/
+	        System.out.print("critters>");
         }
     }
     

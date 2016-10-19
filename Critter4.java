@@ -1,4 +1,3 @@
-package assignment4;
 /* CRITTERS <MyClass.java> 
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -10,6 +9,8 @@ package assignment4;
  * 16480
  * Slip days used: <0>
  * Fall 2016  */
+package assignment4;
+
 public class Critter4 extends Critter{
 
 	//how many times this critter has been instantiated
